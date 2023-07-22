@@ -8,6 +8,7 @@ use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskController extends AbstractController
 {
     #[Route('/', name: 'app_task_index')]
-    public function index(TaskRepository $taskRepository, Request $request, FlashyNotifier $flashy): Response
+    public function index(TaskRepository $taskRepository, Request $request, FlashyNotifier $flashy): JsonResponse
     {
         $error = $request->getSession()->get('error');
 
@@ -37,7 +38,7 @@ class TaskController extends AbstractController
             }
         }
 
-        return $this->render('base.html.twig', [
+        return $this->json([
             'all_tasks' => $allTasks,
             'completed_tasks' => $completedTasks,
             'not_completed_tasks' => $notCompletedTasks,
