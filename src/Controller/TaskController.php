@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskController extends AbstractController
 {
     #[Route('/', name: 'app_task_index')]
-    public function index(TaskRepository $taskRepository, Request $request, FlashyNotifier $flashy): JsonResponse
+    public function index(TaskRepository $taskRepository, Request $request, FlashyNotifier $flashy): Response
     {
         $error = $request->getSession()->get('error');
 
@@ -38,7 +38,7 @@ class TaskController extends AbstractController
             }
         }
 
-        return $this->json([
+        return $this->render('base.html.twig',[
             'all_tasks' => $allTasks,
             'completed_tasks' => $completedTasks,
             'not_completed_tasks' => $notCompletedTasks,
