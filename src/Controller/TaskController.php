@@ -95,6 +95,17 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_task_index');
     }
 
+    #[Route('/task_add_json', name: 'app_task_add_json')]
+    public function addJson(TaskRepository $taskRepository, Request $request): Response
+    {
+        $task = new Task();
+        $task->setStatus('todo');
+        $task->setContent($request->toArray()['content']);
+        $taskRepository->save($task, true);
+
+        return new JsonResponse($task);
+    }
+
     #[Route('/{id}/status/{target}', name: 'app_task_change_status', methods: ['POST', 'GET'])]
     public function changeStatus(Task $task, EntityManagerInterface $entityManager, string $target, Request $request): Response
     {
