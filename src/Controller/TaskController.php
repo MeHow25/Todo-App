@@ -38,7 +38,38 @@ class TaskController extends AbstractController
             }
         }
 
-        return $this->render('base.html.twig',[
+        return $this->render('base.html.twig', [
+            'all_tasks' => $allTasks,
+            'completed_tasks' => $completedTasks,
+            'not_completed_tasks' => $notCompletedTasks,
+            'error' => $error
+        ]);
+    }
+
+    #[Route('/api', name: 'app_task_index_json')]
+    public function indexJson(TaskRepository $taskRepository, Request $request, FlashyNotifier $flashy): JsonResponse
+    {
+        $error = $request->getSession()->get('error');
+
+        if ($error) {
+            $flashy->error($error);
+        }
+
+        $request->getSession()->set('error', null);
+
+        $allTasks = $taskRepository->findBy(array('status' => ['todo','done']));
+        $completedTasks = [];
+        $notCompletedTasks = [];
+
+        foreach ($allTasks as $task) {
+            if ($task->getStatus() == 'done') {
+                $completedTasks[] = $task;
+            } elseif ($task->getStatus() == 'todo') {
+                $notCompletedTasks[] = $task;
+            }
+        }
+
+        return $this->json([
             'all_tasks' => $allTasks,
             'completed_tasks' => $completedTasks,
             'not_completed_tasks' => $notCompletedTasks,
@@ -76,6 +107,22 @@ class TaskController extends AbstractController
             $request->getSession()->set('error', $error);
         }
         return $this->redirectToRoute('app_task_index');
+    }
+
+    #[Route('/status-json', name: 'app_task_change_status_json', methods: ['POST', 'GET'])]
+    public function changeStatusJson(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $availableStatuses = ['todo','done','deleted'];
+        $target = $request->toArray()['status'];
+        if (in_array($target, $availableStatuses)) {
+            $task = $entityManager->getRepository(Task::class)->find($request->toArray()['id']);
+            $task->setStatus($target);
+            $entityManager->flush();
+        } else {
+            $error = 'Invalid target';
+            $request->getSession()->set('error', $error);
+        }
+        return new JsonResponse(['status' => 'OK']);
     }
 
     #[Route('/delete_all', name: 'app_task_delete_all', methods: ['POST', 'GET'])]

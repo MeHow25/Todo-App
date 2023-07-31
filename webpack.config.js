@@ -22,9 +22,6 @@ Encore
      */
     .addEntry('app', './assets/app.js')
 
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
-
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
@@ -47,14 +44,15 @@ Encore
 
     // configure Babel
     // .configureBabel((config) => {
-    //     config.plugins.push('@babel/a-babel-plugin');
+    //     config.plugins.push('@babel/plugin-syntax-jsx');
     // })
 
     // enables and configure @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
-        config.corejs = '3.23';
+        config.corejs = '3.30';
     })
+    .enableReactPreset()
 
     // enables Sass/SCSS support
     //.enableSassLoader()
@@ -63,8 +61,6 @@ Encore
     //.enableTypeScriptLoader()
 
     // uncomment if you use React
-    .enableReactPreset()
-
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
     //.enableIntegrityHashes(Encore.isProduction())
