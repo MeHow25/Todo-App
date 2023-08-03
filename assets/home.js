@@ -10,7 +10,6 @@ function Home() {
     const state = dataState[0];
     const setState = dataState[1];
     const fetchData = () => {
-
         axios.get('http://127.0.0.1:8000/api').then(response => {
             setState(response.data);
             console.log('response', response);
@@ -35,7 +34,7 @@ function Home() {
 
     return <div>
         <h1>Todo App</h1>
-        <AddTask/>
+        <AddTask fetchData={fetchData}/>
         {state?.all_tasks?.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
     </div>;
 }
