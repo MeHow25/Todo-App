@@ -22,14 +22,19 @@ function AddTask() {
         }
     }
 
-    return <input
-        type="text"
-        disabled={inputDisabled}
-        placeholder="Add Task"
-        value={value}
-        onKeyPress={event => handleSubmit(event)}
-        onChange={event => setValue(event.target.value)}
-    />
+    return <div className="d-flex" style={{gap: 10 + 'px'}}>
+        <div className="flex-grow-1">
+            <input
+                type="text"
+                className="form-control my-2 py-3"
+                disabled={inputDisabled}
+                placeholder="Add Task"
+                value={value}
+                onKeyPress={event => handleSubmit(event)}
+                onChange={event => setValue(event.target.value)}
+            />
+        </div>
+    </div>;
 }
 
 export default AddTask;

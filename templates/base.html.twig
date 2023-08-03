@@ -17,82 +17,10 @@
         <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
     </head>
     <body style="background: linear-gradient(#24a5f9,#034792);">
-    <div id="root"></div>
     <div class="container">
         <div class="d-flex flex-wrap align-content-center" style="height:100vh">
             <div class="container bg-white p-5 rounded-3" style="max-width: 500px;">
-                <h1>Todo App</h1>
-                <form name="task" method="post" action="{{ url('app_task_add') }}">
-                    <div class="d-flex" style="gap: 10px;">
-                        <div class="flex-grow-1">
-                            <input type="text" name="task[content]" required="required" class="form-control my-2 py-3"
-                                   placeholder="Add your new todo">
-                        </div>
-                        <div class="pt-2">
-                            <button class="btn bg-primary p-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                     class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-                <br>
-                {% for task in not_completed_tasks %}
-                    <div class="d-flex mb-2">
-                        <div class="flex-grow-1 p-3 text-primary-emphasis bg-primary-subtle rounded-start">
-                            {{ task.content }}
-                        </div>
-                        <a href="{{ path('app_task_change_status', {id: task.id, target: 'done'}) }}" class="text-decoration-none text-white">
-                            <div class="p-3 bg-success">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-check-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                                </svg>
-                            </div>
-                        </a>
-                        <a href="{{ path('app_task_change_status', {id: task.id, target: 'deleted'}) }}" class="text-decoration-none text-white">
-                            <div class="p-3 bg-danger rounded-end">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-x-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                </svg>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-                {% for task in completed_tasks %}
-                    <div class="d-flex mb-2">
-                        <div class="flex-grow-1 p-3 text-primary-emphasis bg-primary-subtle rounded-start">
-                            {{ task.content }}
-                        </div>
-                        <a href="{{ path('app_task_change_status', {id: task.id, target: 'todo'}) }}" class="text-decoration-none text-white ">
-                            <div class="p-3 bg-success rounded-end">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                     class="bi bi-check-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                                </svg>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-                <div class="d-flex">
-                    {% if completed_tasks|length > 0 or not_completed_tasks|length > 0 %}
-                        <div class="p-3 text-primary-emphasis flex-grow-1">
-                            You have {{ not_completed_tasks|length }} pending tasks
-                        </div>
-                        <a href="{{ path('app_task_delete_all') }}" class="btn btn-primary my-2">Clear All</a>
-                    {% else %}
-                        <div class="p-3 text-primary-emphasis flex-grow-1">
-                            Add your first task!
-                        </div>
-                    {% endif %}
-                </div>
+                <div id="root"></div>
             </div>
         </div>
     </div>
