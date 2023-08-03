@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-function AddTask() {
+function AddTask({fetchData}) {
     const [value, setValue] = useState("");
     const [inputDisabled, setInputDisabled] = useState(false);
 
@@ -18,6 +18,7 @@ function AddTask() {
             }).then(response => {
                 setValue("");
                 setInputDisabled(false);
+                fetchData();
             });
         }
     }
