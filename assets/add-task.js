@@ -1,25 +1,41 @@
 import React, {useState} from "react";
+import AddButton from "./add-button";
 
 function AddTask({fetchData}) {
     const [value, setValue] = useState("");
-    const [inputDisabled, setInputDisabled] = useState(false);
+    const [submitDisabled, setSubmitDisabled] = useState(true);
 
-    function handleSubmit(event) {
+    function onKeyPress(event) {
         if (event.key === "Enter") {
-            setInputDisabled(true);
-            fetch("http://127.0.0.1:8000/task_add_json", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    "content": value
-                }),
-            }).then(response => {
-                setValue("");
-                setInputDisabled(false);
-                fetchData();
-            });
+            saveTask();
+        }
+    }
+
+    function saveTask() {
+        if (submitDisabled) {
+            return;
+        }
+        setSubmitDisabled(true);
+        fetch("http://127.0.0.1:8000/task_add_json", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "content": value
+            }),
+        }).then(response => {
+            setValue("");
+            fetchData();
+        });
+    }
+
+    function onInputChange(event) {
+        setValue(event.target.value);
+        if (value.length === 0) {
+            setSubmitDisabled(true);
+        } else {
+            setSubmitDisabled(false);
         }
     }
 
@@ -28,14 +44,14 @@ function AddTask({fetchData}) {
             <input
                 type="text"
                 className="form-control my-2 py-3"
-                disabled={inputDisabled}
                 placeholder="Add Task"
                 value={value}
-                onKeyPress={event => handleSubmit(event)}
-                onChange={event => setValue(event.target.value)}
+                onKeyPress={event => onKeyPress(event)}
+                onChange={onInputChange}
             />
         </div>
-    </div>;
+        <AddButton saveTask={saveTask}/>
+    </div>
 }
 
 export default AddTask;
