@@ -7,14 +7,16 @@ function AddTask({fetchData}) {
 
     function onKeyPress(event) {
         if (event.key === "Enter") {
+            console.log(value, submitDisabled);
             saveTask();
         }
     }
 
     function saveTask() {
-        if (submitDisabled) {
+        if (submitDisabled || value.trim().length === 0) {
             return;
         }
+        console.log('przeszlo')
         setSubmitDisabled(true);
         fetch("http://127.0.0.1:8000/task_add_json", {
             method: "POST",
@@ -32,7 +34,7 @@ function AddTask({fetchData}) {
 
     function onInputChange(event) {
         setValue(event.target.value);
-        if (value.length === 0) {
+        if (value.trim().length === 0) {
             setSubmitDisabled(true);
         } else {
             setSubmitDisabled(false);
@@ -48,6 +50,7 @@ function AddTask({fetchData}) {
                 value={value}
                 onKeyPress={event => onKeyPress(event)}
                 onChange={onInputChange}
+                autoFocus
             />
         </div>
         <AddButton saveTask={saveTask}/>

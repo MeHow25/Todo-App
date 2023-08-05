@@ -149,4 +149,18 @@ class TaskController extends AbstractController
 
         return $this->redirectToRoute('app_task_index');
     }
+
+    #[Route('/delete_all_json', name: 'app_task_delete_all_json', methods: ['POST', 'GET'])]
+    public function deleteAllJson(EntityManagerInterface $entityManager, TaskRepository $tasksRepository): Response
+    {
+        $allTasks = $tasksRepository->findAll();
+
+        foreach ($allTasks as $task) {
+            $task->setStatus('deleted');
+        }
+
+        $entityManager->flush();
+
+        return new JsonResponse();
+    }
 }
