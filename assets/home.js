@@ -4,10 +4,11 @@ import 'core-js/modules/es.array.map';
 import Task from "./task";
 import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
+import ClearAllButton from "./clear-all-button";
 
 function Home() {
 
-    const dataState = useState();
+    const dataState = useState([]);
     const state = dataState[0];
     const setState = dataState[1];
     const fetchData = () => {
@@ -31,6 +32,12 @@ function Home() {
         })
     }
 
+    const onClearAllClick = () => {
+        axios.post('http://127.0.0.1:8000/delete_all_json').then(r => {
+            fetchData();
+        })
+    }
+
     useEffect(() => {
         let ignore = false;
 
@@ -43,8 +50,11 @@ function Home() {
     return <div>
         <h1>Todo App</h1>
         <AddTask fetchData={fetchData}/>
-        {state?.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
-        <TasksCounter numberOfTasksTodo={state?.filter(task => task.status === 'todo').length}/>
+        {state.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
+        <div className="d-flex">
+            <TasksCounter numberOfTasksTodo={state.filter(task => task.status === 'todo').length}/>
+            {state.length > 0 ? <ClearAllButton onClearAllClick={onClearAllClick}/> : null}
+        </div>
     </div>;
 }
 
