@@ -3,6 +3,7 @@ import axios from "axios";
 import 'core-js/modules/es.array.map';
 import Task from "./task";
 import AddTask from "./add-task";
+import TasksCounter from "./tasks-counter";
 
 function Home() {
 
@@ -43,6 +44,7 @@ function Home() {
         <h1>Todo App</h1>
         <AddTask fetchData={fetchData}/>
         {state?.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
+        <TasksCounter numberOfTasksTodo={state?.filter(task => task.status === 'todo').length}/>
     </div>;
 }
 
