@@ -12,7 +12,7 @@ function Home() {
     const state = dataState[0];
     const setState = dataState[1];
     const fetchData = () => {
-        axios.get('http://127.0.0.1:8000/api').then(response => {
+        axios.get('http://127.0.0.1:8000/all_tasks').then(response => {
             const sortedTasks = sortDataByStatus(response.data.all_tasks);
             setState(sortedTasks);
         })
@@ -27,13 +27,13 @@ function Home() {
     const onTaskClick = (task, target) => {
 
         task.status = target;
-        axios.post('http://127.0.0.1:8000/status-json', task).then(r => {
+        axios.post('http://127.0.0.1:8000/status', task).then(r => {
             fetchData();
         })
     }
 
     const onClearAllClick = () => {
-        axios.post('http://127.0.0.1:8000/delete_all_json').then(r => {
+        axios.post('http://127.0.0.1:8000/delete_all').then(r => {
             fetchData();
         })
     }
