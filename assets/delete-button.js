@@ -1,7 +1,10 @@
 import React from "react";
+import {Tooltip} from "react-bootstrap";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 function DeleteButton({task, onTaskClick}) {
     return task.status === "todo" ?
+        <OverlayTrigger overlay={<Tooltip style={{position:"fixed"}}>Delete task</Tooltip>}>
         <a onClick={() => onTaskClick(task, "deleted")}>
             <div className="p-3 bg-danger rounded-end text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -12,6 +15,7 @@ function DeleteButton({task, onTaskClick}) {
                 </svg>
             </div>
         </a>
+        </OverlayTrigger>
         : null
 }
 
