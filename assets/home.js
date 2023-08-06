@@ -5,12 +5,12 @@ import Task from "./task";
 import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
 import ClearAllButton from "./clear-all-button";
+import {Toast, ToastContainer} from "react-bootstrap";
 
 function Home() {
 
-    const dataState = useState([]);
-    const state = dataState[0];
-    const setState = dataState[1];
+    const [state, setState] = useState([]);
+    const [showNotification, setShowNotification] = useState(true);
     const fetchData = () => {
         axios.get('http://127.0.0.1:8000/all_tasks').then(response => {
             const sortedTasks = sortDataByStatus(response.data.all_tasks);
@@ -48,6 +48,15 @@ function Home() {
     }, []);
 
     return <div>
+            <ToastContainer
+                className="p-3"
+                position="top-end"
+                style={{ zIndex: 1 }}
+            >
+                <Toast bg="danger" onClose={() => setShowNotification(false)} show={showNotification} delay={3000} autohide>
+                    <Toast.Body className="text-white">Hello, world! This is a toast message.</Toast.Body>
+                </Toast>
+            </ToastContainer>
         <h1>Todo App</h1>
         <AddTask fetchData={fetchData}/>
         {state.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
