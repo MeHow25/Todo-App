@@ -16,9 +16,8 @@ function AddTask({fetchData}) {
         if (submitDisabled || value.trim().length === 0) {
             return;
         }
-        console.log('przeszlo')
         setSubmitDisabled(true);
-        fetch("http://127.0.0.1:8000/task_add_json", {
+        fetch("http://127.0.0.1:8000/task_add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
