@@ -5,7 +5,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 function DoneButton({task, onTaskClick}) {
     return task.status !== "done" ?
         <OverlayTrigger overlay={<Tooltip style={{position:"fixed"}}>Mark task as done</Tooltip>}>
-            <a onClick={() => onTaskClick(task, "done")}>
+            <a onClick={() => onTaskClick(task, "done", "Successfully marked task as done")}>
                 <div className="p-3 bg-success text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                          className="bi bi-check-circle" viewBox="0 0 16 16">
