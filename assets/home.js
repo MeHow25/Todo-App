@@ -5,12 +5,13 @@ import Task from "./task";
 import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
 import ClearAllButton from "./clear-all-button";
+import {Toast, ToastContainer} from "react-bootstrap";
 
 function Home() {
 
-    const dataState = useState([]);
-    const state = dataState[0];
-    const setState = dataState[1];
+    const [state, setState] = useState([]);
+    const [notification, setNotification] = useState(null);
+
     const fetchData = () => {
         axios.get('http://127.0.0.1:8000/all_tasks').then(response => {
             const sortedTasks = sortDataByStatus(response.data.all_tasks);
@@ -24,17 +25,19 @@ function Home() {
         return todoTasks.concat(doneTasks);
     }
 
-    const onTaskClick = (task, target) => {
+    const onTaskClick = (task, target, notificationMessage) => {
 
         task.status = target;
         axios.post('http://127.0.0.1:8000/status', task).then(r => {
             fetchData();
+            showNotification('success', notificationMessage);
         })
     }
 
     const onClearAllClick = () => {
         axios.post('http://127.0.0.1:8000/delete_all').then(r => {
             fetchData();
+            showNotification('success', 'Successfully deleted all tasks');
         })
     }
 
@@ -47,9 +50,26 @@ function Home() {
         }
     }, []);
 
+    const showNotification = (type, message) => {
+        setNotification({type: type, message: message})
+    }
+
+    const notificationType = notification?.type;
+    const notificationMessage = notification?.message;
+
     return <div>
+        <ToastContainer
+            className="p-3"
+            position="top-end"
+            style={{zIndex: 1}}
+        >
+            <Toast bg={notificationType} onClose={() => setNotification(null)} show={!!notification}
+                   delay={3000} autohide>
+                <Toast.Body className="text-white">{notificationMessage}</Toast.Body>
+            </Toast>
+        </ToastContainer>
         <h1>Todo App</h1>
-        <AddTask fetchData={fetchData}/>
+        <AddTask fetchData={fetchData} showNotification={showNotification}/>
         {state.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
         <div className="d-flex">
             <TasksCounter numberOfTasksTodo={state.filter(task => task.status === 'todo').length}/>

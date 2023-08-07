@@ -1,13 +1,12 @@
 import React, {useState} from "react";
 import AddButton from "./add-button";
 
-function AddTask({fetchData}) {
+function AddTask({fetchData, showNotification}) {
     const [value, setValue] = useState("");
     const [submitDisabled, setSubmitDisabled] = useState(true);
 
     function onKeyPress(event) {
         if (event.key === "Enter") {
-            console.log(value, submitDisabled);
             saveTask();
         }
     }
@@ -28,6 +27,7 @@ function AddTask({fetchData}) {
         }).then(response => {
             setValue("");
             fetchData();
+            showNotification("success", "Task added successfully");
         });
     }
 

@@ -5,7 +5,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 function DeleteButton({task, onTaskClick}) {
     return task.status === "todo" ?
         <OverlayTrigger overlay={<Tooltip style={{position:"fixed"}}>Delete task</Tooltip>}>
-        <a onClick={() => onTaskClick(task, "deleted")}>
+        <a onClick={() => onTaskClick(task, "deleted", "Successfully deleted task")}>
             <div className="p-3 bg-danger rounded-end text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                      className="bi bi-x-circle" viewBox="0 0 16 16">
