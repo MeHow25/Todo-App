@@ -11,6 +11,7 @@ function Home() {
 
     const [state, setState] = useState([]);
     const [notification, setNotification] = useState(null);
+    const [showNotification, setShowNotification] = useState(false);
 
     const fetchData = () => {
         axios.get('http://127.0.0.1:8000/all_tasks').then(response => {
@@ -30,14 +31,14 @@ function Home() {
         task.status = target;
         axios.post('http://127.0.0.1:8000/status', task).then(r => {
             fetchData();
-            showNotification('success', notificationMessage);
+            showFlashMessage('success', notificationMessage);
         })
     }
 
     const onClearAllClick = () => {
         axios.post('http://127.0.0.1:8000/delete_all').then(r => {
             fetchData();
-            showNotification('success', 'Successfully deleted all tasks');
+            showFlashMessage('success', 'Successfully deleted all tasks');
         })
     }
 
@@ -50,8 +51,9 @@ function Home() {
         }
     }, []);
 
-    const showNotification = (type, message) => {
-        setNotification({type: type, message: message})
+    const showFlashMessage = (type, message) => {
+        setNotification({type: type, message: message});
+        setShowNotification(true);
     }
 
     const notificationType = notification?.type;
@@ -63,13 +65,14 @@ function Home() {
             position="top-end"
             style={{zIndex: 1}}
         >
-            <Toast bg={notificationType} onClose={() => setNotification(null)} show={!!notification}
+            <Toast bg={notificationType}
+                   onClose={() => setShowNotification(false)} show={showNotification}
                    delay={3000} autohide>
                 <Toast.Body className="text-white">{notificationMessage}</Toast.Body>
             </Toast>
         </ToastContainer>
         <h1>Todo App</h1>
-        <AddTask fetchData={fetchData} showNotification={showNotification}/>
+        <AddTask fetchData={fetchData} showNotification={showFlashMessage}/>
         {state.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
         <div className="d-flex">
             <TasksCounter numberOfTasksTodo={state.filter(task => task.status === 'todo').length}/>
