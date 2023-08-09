@@ -6,17 +6,20 @@ import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
 import ClearAllButton from "./clear-all-button";
 import {Toast, ToastContainer} from "react-bootstrap";
+import {useDispatch} from "react-redux";
 
 function Home() {
-
+    const dispatch = useDispatch();
     const [state, setState] = useState([]);
     const [notification, setNotification] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
 
     const fetchData = () => {
+        dispatch({type: 'fetch_tasks'});
         axios.get('http://127.0.0.1:8000/all_tasks').then(response => {
             const sortedTasks = sortDataByStatus(response.data.all_tasks);
             setState(sortedTasks);
+            dispatch({type: 'fetch_tasks_success', tasks: sortedTasks});
         })
     }
 
