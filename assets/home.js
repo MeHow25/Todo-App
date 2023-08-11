@@ -7,12 +7,22 @@ import TasksCounter from "./tasks-counter";
 import ClearAllButton from "./clear-all-button";
 import {Toast, ToastContainer} from "react-bootstrap";
 import {useDispatch} from "react-redux";
+import {useGetTasksQuery} from "./api-slice";
 
 function Home() {
     const dispatch = useDispatch();
     const [state, setState] = useState([]);
     const [notification, setNotification] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
+
+    const {
+        data: tasks = [],
+        isLoading,
+        isSuccess,
+        isError,
+        error,
+        refetch
+    } = useGetTasksQuery({}, {});
 
     const fetchData = () => {
         dispatch({type: 'fetch_tasks'});
@@ -30,12 +40,13 @@ function Home() {
     }
 
     const onTaskClick = (task, target, notificationMessage) => {
-
-        task.status = target;
-        axios.post('http://127.0.0.1:8000/status', task).then(r => {
-            fetchData();
-            showFlashMessage('success', notificationMessage);
-        })
+        refetch();
+        //
+        // task.status = target;
+        // axios.post('http://127.0.0.1:8000/status', task).then(r => {
+        //     fetchData();
+        //     showFlashMessage('success', notificationMessage);
+        // })
     }
 
     const onClearAllClick = () => {
@@ -45,14 +56,14 @@ function Home() {
         })
     }
 
-    useEffect(() => {
-        let ignore = false;
-
-        if (!ignore) fetchData()
-        return () => {
-            ignore = true;
-        }
-    }, []);
+    // useEffect(() => {
+    //     let ignore = false;
+    //
+    //     if (!ignore) fetchData()
+    //     return () => {
+    //         ignore = true;
+    //     }
+    // }, []);
 
     const showFlashMessage = (type, message) => {
         setNotification({type: type, message: message});
@@ -76,7 +87,7 @@ function Home() {
         </ToastContainer>
         <h1>Todo App</h1>
         <AddTask fetchData={fetchData} showNotification={showFlashMessage}/>
-        {state.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
+        {tasks?.all_tasks?.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
         <div className="d-flex">
             <TasksCounter numberOfTasksTodo={state.filter(task => task.status === 'todo').length}/>
             {state.length > 0 ? <ClearAllButton onClearAllClick={onClearAllClick}/> : null}
