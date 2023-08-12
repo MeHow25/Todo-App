@@ -1,34 +1,28 @@
 import React, {useState} from "react";
 import AddButton from "./add-button";
 
-function AddTask({fetchData, showNotification}) {
+function AddTask({fetchData, showNotification, addTask}) {
     const [value, setValue] = useState("");
     const [submitDisabled, setSubmitDisabled] = useState(true);
 
     function onKeyPress(event) {
         if (event.key === "Enter") {
             saveTask();
+            //todo blocking submitting
         }
     }
 
-    function saveTask() {
+    async function saveTask() {
         if (submitDisabled || value.trim().length === 0) {
             return;
         }
         setSubmitDisabled(true);
-        fetch("http://127.0.0.1:8000/task_add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "content": value
-            }),
-        }).then(response => {
-            setValue("");
-            fetchData();
-            showNotification("success", "Task added successfully");
+        await addTask({
+            content: value
         });
+        setValue("");
+        fetchData();
+        showNotification("success", "Task added successfully");
     }
 
     function onInputChange(event) {

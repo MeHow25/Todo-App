@@ -6,7 +6,7 @@ import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
 import ClearAllButton from "./clear-all-button";
 import {Toast, ToastContainer} from "react-bootstrap";
-import {useGetTasksQuery, useUpdateTaskMutation} from "./api-slice";
+import {useAddTaskMutation, useGetTasksQuery, useUpdateTaskMutation} from "./api-slice";
 
 const sortDataByStatus = (allTasks) => {
     const todoTasks = allTasks.filter(task => task.status === 'todo');
@@ -18,6 +18,7 @@ function Home() {
     //todo loading status
     const [notification, setNotification] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
+    const [addTask, {isAddLoading}] = useAddTaskMutation();
     const [updateTask, {isUpdateLoading}] = useUpdateTaskMutation();
 
     const {
@@ -73,7 +74,7 @@ function Home() {
             </Toast>
         </ToastContainer>
         <h1>Todo App</h1>
-        <AddTask fetchData={fetchData} showNotification={showFlashMessage}/>
+        <AddTask fetchData={fetchData} showNotification={showFlashMessage} addTask={addTask}/>
         {sortedTasks.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick}/>)}
         <div className="d-flex">
             <TasksCounter numberOfTasksTodo={sortedTasks.filter(task => task.status === 'todo').length}/>
