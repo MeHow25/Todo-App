@@ -7,6 +7,13 @@ export const apiSlice = createApi({
         getTasks: builder.query({
             query: () => '/all_tasks'
         }),
+        addTask: builder.mutation({
+            query: taskToAdd => ({
+                url: '/task_add',
+                method: 'POST',
+                body: taskToAdd
+            })
+        }),
         updateTask: builder.mutation({
             query: taskToUpdate => ({
                 url: '/status',
@@ -17,4 +24,4 @@ export const apiSlice = createApi({
     })
 });
 
-export const { useGetTasksQuery, useUpdateTaskMutation } = apiSlice
+export const { useGetTasksQuery, useAddTaskMutation, useUpdateTaskMutation } = apiSlice
