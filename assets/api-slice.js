@@ -20,8 +20,14 @@ export const apiSlice = createApi({
                 method: 'POST',
                 body: taskToUpdate
             })
+        }),
+        deleteAllTasks: builder.mutation({
+            query: () => ({
+                url: '/delete_all',
+                method: 'POST'
+            })
         })
     })
 });
 
-export const { useGetTasksQuery, useAddTaskMutation, useUpdateTaskMutation } = apiSlice
+export const { useGetTasksQuery, useAddTaskMutation, useUpdateTaskMutation, useDeleteAllTasksMutation } = apiSlice

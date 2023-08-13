@@ -1,12 +1,11 @@
 import React, {useMemo, useState} from 'react';
-import axios from "axios";
 import 'core-js/modules/es.array.map';
 import Task from "./task";
 import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
 import ClearAllButton from "./clear-all-button";
 import {Toast, ToastContainer} from "react-bootstrap";
-import {useAddTaskMutation, useGetTasksQuery, useUpdateTaskMutation} from "./api-slice";
+import {useAddTaskMutation, useDeleteAllTasksMutation, useGetTasksQuery, useUpdateTaskMutation} from "./api-slice";
 
 const sortDataByStatus = (allTasks) => {
     const todoTasks = allTasks.filter(task => task.status === 'todo');
@@ -20,6 +19,7 @@ function Home() {
     const [showNotification, setShowNotification] = useState(false);
     const [addTask, {isAddLoading}] = useAddTaskMutation();
     const [updateTask, {isUpdateLoading}] = useUpdateTaskMutation();
+    const [deleteAllTasks, {isDeleteAllLoading}] = useDeleteAllTasksMutation();
 
     const {
         data: tasks = [],
@@ -46,11 +46,10 @@ function Home() {
         refetch();
     }
 
-    const onClearAllClick = () => {
-        axios.post('http://127.0.0.1:8000/delete_all').then(r => {
-            fetchData();
-            showFlashMessage('success', 'Successfully deleted all tasks');
-        })
+    const onClearAllClick = async () => {
+        await deleteAllTasks();
+        refetch();
+        showFlashMessage('success', 'Successfully deleted all tasks');
     }
 
     const showFlashMessage = (type, message) => {
