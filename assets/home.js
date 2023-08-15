@@ -19,6 +19,7 @@ function Home() {
     const [showNotification, setShowNotification] = useState(false);
     const [addTask, {isAddLoading}] = useAddTaskMutation();
     const [deleteAllTasks, {isDeleteAllLoading}] = useDeleteAllTasksMutation();
+    const [updateTask, {isUpdateLoading}] = useUpdateTaskMutation();
 
     const {
         data: tasks = [],
@@ -73,7 +74,7 @@ function Home() {
         </ToastContainer>
         <h1>Todo App</h1>
         <AddTask fetchData={fetchData} showNotification={showFlashMessage} addTask={addTask}/>
-        {sortedTasks.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick} isUpdateLoading={isUpdateLoading}/>)}
+        {sortedTasks.map(task => <Task key={task.id} task={task} onTaskClick={onTaskClick} refetch={refetch} showFlashMessage={showFlashMessage}/>)}
         <div className="d-flex">
             <TasksCounter numberOfTasksTodo={sortedTasks.filter(task => task.status === 'todo').length}/>
             {sortedTasks.length > 0 ? <ClearAllButton onClearAllClick={onClearAllClick}/> : null}
