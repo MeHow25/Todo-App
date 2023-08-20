@@ -1,7 +1,7 @@
 import React from "react";
 import {useDeleteAllTasksMutation} from "./api-slice";
 
-function ClearAllButton({refetch, showFlashMessage}) {
+function DeleteAllButton({refetch, showFlashMessage}) {
     const [deleteAllTasks, {isLoading}] = useDeleteAllTasksMutation();
 
     async function onClick() {
@@ -10,7 +10,7 @@ function ClearAllButton({refetch, showFlashMessage}) {
         showFlashMessage('success', 'Successfully deleted all tasks');
     }
 
-    return <a onClick={onClick} className={"btn my-2 " + (isLoading ? "btn-secondary" : "btn-primary")}>Clear All</a>
+    return <a onClick={onClick} className={"btn my-2 " + (isLoading ? "btn-secondary" : "btn-primary")}>Delete All</a>
 }
 
-export default ClearAllButton;
+export default DeleteAllButton;

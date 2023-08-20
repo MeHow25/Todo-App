@@ -3,7 +3,7 @@ import 'core-js/modules/es.array.map';
 import Task from "./task";
 import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
-import ClearAllButton from "./clear-all-button";
+import DeleteAllButton from "./delete-all-button";
 import {Toast, ToastContainer} from "react-bootstrap";
 import {useGetTasksQuery} from "./api-slice";
 
@@ -52,7 +52,7 @@ function Home() {
         {sortedTasks.map(task => <Task key={task.id} task={task} refetch={refetch} showFlashMessage={showFlashMessage}/>)}
         <div className="d-flex">
             <TasksCounter numberOfTasksTodo={sortedTasks.filter(task => task.status === 'todo').length}/>
-            {sortedTasks.length > 0 ? <ClearAllButton refetch={refetch} showFlashMessage={showFlashMessage}/> : null}
+            {sortedTasks.length > 0 ? <DeleteAllButton refetch={refetch} showFlashMessage={showFlashMessage}/> : null}
         </div>
     </div>;
 }
