@@ -5,7 +5,7 @@ import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
 import ClearAllButton from "./clear-all-button";
 import {Toast, ToastContainer} from "react-bootstrap";
-import {useDeleteAllTasksMutation, useGetTasksQuery} from "./api-slice";
+import {useGetTasksQuery} from "./api-slice";
 
 const sortDataByStatus = (allTasks) => {
     const todoTasks = allTasks.filter(task => task.status === 'todo');
@@ -14,10 +14,8 @@ const sortDataByStatus = (allTasks) => {
 }
 
 function Home() {
-    //todo loading status
     const [notification, setNotification] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
-    const [deleteAllTasks, {isDeleteAllLoading}] = useDeleteAllTasksMutation();
 
     const {data: tasks = [], refetch} = useGetTasksQuery({}, {});
 
@@ -27,12 +25,6 @@ function Home() {
 
     const fetchData = () => {
         refetch();
-    }
-
-    const onClearAllClick = async () => {
-        await deleteAllTasks();
-        refetch();
-        showFlashMessage('success', 'Successfully deleted all tasks');
     }
 
     const showFlashMessage = (type, message) => {
@@ -60,7 +52,7 @@ function Home() {
         {sortedTasks.map(task => <Task key={task.id} task={task} refetch={refetch} showFlashMessage={showFlashMessage}/>)}
         <div className="d-flex">
             <TasksCounter numberOfTasksTodo={sortedTasks.filter(task => task.status === 'todo').length}/>
-            {sortedTasks.length > 0 ? <ClearAllButton onClearAllClick={onClearAllClick}/> : null}
+            {sortedTasks.length > 0 ? <ClearAllButton refetch={refetch} showFlashMessage={showFlashMessage}/> : null}
         </div>
     </div>;
 }
