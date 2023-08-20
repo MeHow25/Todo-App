@@ -5,7 +5,7 @@ import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
 import ClearAllButton from "./clear-all-button";
 import {Toast, ToastContainer} from "react-bootstrap";
-import {useAddTaskMutation, useDeleteAllTasksMutation, useGetTasksQuery, useUpdateTaskMutation} from "./api-slice";
+import {useDeleteAllTasksMutation, useGetTasksQuery} from "./api-slice";
 
 const sortDataByStatus = (allTasks) => {
     const todoTasks = allTasks.filter(task => task.status === 'todo');
@@ -17,17 +17,9 @@ function Home() {
     //todo loading status
     const [notification, setNotification] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
-    const [addTask, {isAddLoading}] = useAddTaskMutation();
     const [deleteAllTasks, {isDeleteAllLoading}] = useDeleteAllTasksMutation();
 
-    const {
-        data: tasks = [],
-        isLoading,
-        isSuccess,
-        isError,
-        error,
-        refetch
-    } = useGetTasksQuery({}, {});
+    const {data: tasks = [], refetch} = useGetTasksQuery({}, {});
 
     const sortedTasks = useMemo(() => {
         return sortDataByStatus(tasks?.all_tasks || []);
