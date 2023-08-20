@@ -1,12 +1,23 @@
 import React from "react";
 import {Tooltip} from "react-bootstrap";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import {useUpdateTaskMutation} from "./api-slice";
 
-function DoneButton({task, onTaskClick}) {
+function DoneButton({task, refetch, showFlashMessage}) {
+    const [updateTask, {isLoading: isUpdateLoading}] = useUpdateTaskMutation();
+
+    async function onClick() {
+        const taskToUpdate = {...task};
+        taskToUpdate.status = 'done';
+        await updateTask(taskToUpdate);
+        refetch();
+        showFlashMessage('success', 'Successfully marked task as done');
+    }
+
     return task.status !== "done" ?
         <OverlayTrigger overlay={<Tooltip style={{position:"fixed"}}>Mark task as done</Tooltip>}>
-            <a onClick={() => onTaskClick(task, "done", "Successfully marked task as done")}>
-                <div className="p-3 bg-success text-white">
+            <a onClick={onClick}>
+                <div className={"p-3 text-white " + (isUpdateLoading ? 'bg-secondary' : 'bg-success')}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                          className="bi bi-check-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
