@@ -3,7 +3,7 @@ import TodoButton from "./todo-button";
 import DeleteButton from "./delete-button";
 import DoneButton from "./done-button";
 
-function Task({task, onTaskClick, refetch, showFlashMessage}) {
+function Task({task, refetch, showFlashMessage}) {
     return <div key={task.id}>
         <div className="d-flex mb-2">
             <div className="flex-grow-1 p-3 text-primary-emphasis bg-primary-subtle rounded-start">
