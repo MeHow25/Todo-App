@@ -64,7 +64,7 @@ function Home() {
             </Toast>
         </ToastContainer>
         <h1>Todo App</h1>
-        <AddTask fetchData={fetchData} showNotification={showFlashMessage} addTask={addTask}/>
+        <AddTask fetchData={fetchData} showNotification={showFlashMessage}/>
         {sortedTasks.map(task => <Task key={task.id} task={task} refetch={refetch} showFlashMessage={showFlashMessage}/>)}
         <div className="d-flex">
             <TasksCounter numberOfTasksTodo={sortedTasks.filter(task => task.status === 'todo').length}/>
