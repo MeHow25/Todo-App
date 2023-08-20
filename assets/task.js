@@ -9,9 +9,9 @@ function Task({task, onTaskClick, refetch, showFlashMessage}) {
             <div className="flex-grow-1 p-3 text-primary-emphasis bg-primary-subtle rounded-start">
                 {task.content}
             </div>
-            <TodoButton task={task} onTaskClick={onTaskClick} refetch={refetch} showFlashMessage={showFlashMessage}/>
-            <DoneButton task={task} onTaskClick={onTaskClick}/>
-            <DeleteButton task={task} onTaskClick={onTaskClick}/>
+            <TodoButton task={task} refetch={refetch} showFlashMessage={showFlashMessage}/>
+            <DoneButton task={task} refetch={refetch} showFlashMessage={showFlashMessage}/>
+            <DeleteButton task={task} refetch={refetch} showFlashMessage={showFlashMessage}/>
         </div>
     </div>
 }

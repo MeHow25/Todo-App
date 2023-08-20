@@ -14,10 +14,8 @@ function TodoButton({task, refetch, showFlashMessage}) {
         showFlashMessage('success', 'Successfully marked task as to do');
     }
 
-    console.log(isUpdateLoading);
     return task.status !== "todo" ?
         <OverlayTrigger overlay={<Tooltip style={{position: "fixed"}}>Mark task as to do</Tooltip>}>
-            {/*<a onClick={() => isUpdateLoading ? null : onTaskClick(task, "todo", "Successfully marked task as to do")}>*/}
             <a onClick={onClick}>
                 <div className={"p-3 rounded-end text-white " + (isUpdateLoading ? 'bg-secondary' : 'bg-success')}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"

@@ -55,8 +55,6 @@ class TaskController extends AbstractController
     #[Route('/status', name: 'app_task_change_status', methods: ['POST'])]
     public function changeStatus(EntityManagerInterface $entityManager, Request $request): Response
     {
-        sleep(5);
-        
         $availableStatuses = ['todo','done','deleted'];
         $target = $request->toArray()['status'];
         if (in_array($target, $availableStatuses)) {
