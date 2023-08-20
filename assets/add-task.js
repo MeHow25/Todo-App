@@ -1,14 +1,15 @@
 import React, {useState} from "react";
 import AddButton from "./add-button";
+import {useAddTaskMutation} from "./api-slice";
 
-function AddTask({fetchData, showNotification, addTask}) {
+function AddTask({fetchData, showNotification}) {
     const [value, setValue] = useState("");
     const [submitDisabled, setSubmitDisabled] = useState(true);
+    const [addTask, {isLoading}] = useAddTaskMutation();
 
     function onKeyPress(event) {
         if (event.key === "Enter") {
             saveTask();
-            //todo blocking submitting
         }
     }
 
@@ -46,7 +47,7 @@ function AddTask({fetchData, showNotification, addTask}) {
                 autoFocus
             />
         </div>
-        <AddButton saveTask={saveTask}/>
+        <AddButton saveTask={saveTask} isLoading={isLoading}/>
     </div>
 }
 

@@ -2,10 +2,10 @@ import React from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import {Tooltip} from "react-bootstrap";
 
-function AddButton({saveTask}) {
+function AddButton({saveTask, isLoading}) {
     return <div className="pt-2">
-        <OverlayTrigger overlay={<Tooltip style={{position:"fixed"}}>Add a new task</Tooltip>}>
-            <button onClick={saveTask} className="btn bg-primary p-3">
+        <OverlayTrigger overlay={<Tooltip style={{position: "fixed"}}>Add a new task</Tooltip>}>
+            <button onClick={saveTask} className={"btn p-3 " + (isLoading ? 'bg-secondary' : 'bg-primary')}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
                      className="bi bi-plus-circle" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
