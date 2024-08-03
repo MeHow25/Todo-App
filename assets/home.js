@@ -1,4 +1,5 @@
 import React, {useMemo, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import 'core-js/modules/es.array.map';
 import Task from "./task";
 import AddTask from "./add-task";
@@ -14,6 +15,8 @@ const sortDataByStatus = (allTasks) => {
 }
 
 function Home() {
+    const navigate = useNavigate();
+
     const [notification, setNotification] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
 
@@ -32,6 +35,11 @@ function Home() {
         setShowNotification(true);
     }
 
+    const handleLogout = async () => {
+        await fetch('/logout', { method: 'POST' });
+        navigate('/login');
+    };
+
     const notificationType = notification?.type;
     const notificationMessage = notification?.message;
 
@@ -48,6 +56,7 @@ function Home() {
             </Toast>
         </ToastContainer>
         <h1>Todo App</h1>
+        <button onClick={handleLogout}>Logout</button>
         <AddTask fetchData={fetchData} showNotification={showFlashMessage}/>
         {sortedTasks.map(task => <Task key={task.id} task={task} refetch={refetch} showFlashMessage={showFlashMessage}/>)}
         <div className="d-flex">
