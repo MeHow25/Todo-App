@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[IsGranted('ROLE_USER')]
 class TaskController extends AbstractController
 {
     #[Route('/', name: 'app_task_index')]
@@ -22,7 +23,7 @@ class TaskController extends AbstractController
     #[Route('/all_tasks', name: 'app_all_tasks', methods: ['GET'])]
     public function allTasks(TaskRepository $taskRepository): JsonResponse
     {
-        $allTasks = $taskRepository->findBy(array('status' => ['todo','done']));
+        $allTasks = $taskRepository->findBy(array('status' => ['todo','done'], 'user' => $this->getUser()));
         $completedTasks = [];
         $notCompletedTasks = [];
 
@@ -47,6 +48,7 @@ class TaskController extends AbstractController
         $task = new Task();
         $task->setStatus('todo');
         $task->setContent($request->toArray()['content']);
+        $task->setUser($this->getUser());
         $taskRepository->save($task, true);
 
         return new JsonResponse($task);
@@ -71,7 +73,7 @@ class TaskController extends AbstractController
     #[Route('/delete_all', name: 'app_task_delete_all', methods: ['POST'])]
     public function deleteAll(EntityManagerInterface $entityManager, TaskRepository $tasksRepository): Response
     {
-        $allTasks = $tasksRepository->findAll();
+        $allTasks = $tasksRepository->findBy(array('user' => $this->getUser()));
 
         foreach ($allTasks as $task) {
             $task->setStatus('deleted');

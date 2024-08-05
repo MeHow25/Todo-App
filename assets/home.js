@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import 'core-js/modules/es.array.map';
 import Task from "./task";
@@ -6,7 +6,8 @@ import AddTask from "./add-task";
 import TasksCounter from "./tasks-counter";
 import DeleteAllButton from "./delete-all-button";
 import {Toast, ToastContainer} from "react-bootstrap";
-import {useGetTasksQuery} from "./api-slice";
+import {useGetTasksQuery, apiSlice} from "./api-slice";
+import {useDispatch} from "react-redux";
 
 const sortDataByStatus = (allTasks) => {
     const todoTasks = allTasks.filter(task => task.status === 'todo');
@@ -16,11 +17,16 @@ const sortDataByStatus = (allTasks) => {
 
 function Home() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [notification, setNotification] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
 
-    const {data: tasks = [], refetch} = useGetTasksQuery({}, {});
+    const { data: tasks = [], refetch } = useGetTasksQuery({}, {});
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     const sortedTasks = useMemo(() => {
         return sortDataByStatus(tasks?.all_tasks || []);
@@ -37,6 +43,7 @@ function Home() {
 
     const handleLogout = async () => {
         await fetch('/logout', { method: 'POST' });
+        dispatch(apiSlice.util.resetApiState());
         navigate('/login');
     };
 

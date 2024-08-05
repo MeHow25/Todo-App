@@ -9,7 +9,6 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        //todo maybe move to redux
         const response = await fetch('/login', {
             method: 'POST',
             headers: {
