@@ -17,7 +17,8 @@ security:
             json_login:
                 check_path: app_login
             logout:
-                path: app_logout
+                path: /logout
+                target: app_task_index
 
     access_control:
         - { path: ^/register, roles: PUBLIC_ACCESS }
