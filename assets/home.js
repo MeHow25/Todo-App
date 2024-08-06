@@ -15,8 +15,7 @@ const sortDataByStatus = (allTasks) => {
     return todoTasks.concat(doneTasks);
 }
 
-function Home() {
-    const navigate = useNavigate();
+function Home({setIsAuthenticated}) {
     const dispatch = useDispatch();
 
     const [notification, setNotification] = useState(null);
@@ -44,7 +43,7 @@ function Home() {
     const handleLogout = async () => {
         await fetch('/logout', { method: 'POST' });
         dispatch(apiSlice.util.resetApiState());
-        navigate('/login');
+        setIsAuthenticated(false);
     };
 
     const notificationType = notification?.type;

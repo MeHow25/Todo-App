@@ -1,28 +1,16 @@
 import './styles/app.css';
-import React, {useEffect, useState} from 'react';
-import {Provider} from 'react-redux';
-import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
-import {createRoot} from 'react-dom/client';
-import {store} from './store';
+import React, { useState, useEffect } from 'react';
+import { Provider } from 'react-redux';
+import { createRoot } from 'react-dom/client';
+import { store } from './store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from "./home";
 import Login from "./login";
 import Register from './register';
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
-            </Routes>
-        </BrowserRouter>
-    );
-}
-
-function PrivateRoute({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
+    const [currentPage, setCurrentPage] = useState('login');
 
     useEffect(() => {
         fetch('/me')
@@ -36,7 +24,17 @@ function PrivateRoute({ children }) {
         return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? children : <Navigate to="/login" />;
+    if (!isAuthenticated) {
+        return currentPage === 'login' ? 
+            <Login setIsAuthenticated={setIsAuthenticated} setCurrentPage={setCurrentPage} /> : 
+            <Register setCurrentPage={setCurrentPage} />;
+    }
+
+    return (
+        <div>
+            <Home setIsAuthenticated={setIsAuthenticated} />
+        </div>
+    );
 }
 
 const container = document.getElementById('root');
