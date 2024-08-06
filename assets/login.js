@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
 
-function Login() {
+function Login({ setIsAuthenticated, setCurrentPage }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +15,7 @@ function Login() {
             body: JSON.stringify({ username: email, password }),
         });
         if (response.ok) {
-            navigate('/');
+            setIsAuthenticated(true);
         } else {
             const data = await response.json();
             setError(data.message);
@@ -50,7 +48,7 @@ function Login() {
                     />
                 </div>
                 <button type="submit">Login</button>
-                <button onClick={() => navigate('/register')}>Register</button>
+                <button onClick={() => setCurrentPage('register')}>Register</button>
             </form>
         </div>
     );

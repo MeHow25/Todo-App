@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
 
-function Register() {
+function Register({ setCurrentPage }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +15,7 @@ function Register() {
             body: JSON.stringify({ email, password }),
         });
         if (response.ok) {
-            navigate('/login');
+            setCurrentPage('login');
         } else {
             const data = await response.json();
             setError(data.message);
@@ -52,6 +50,7 @@ function Register() {
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Register</button>
+                <button onClick={() => setCurrentPage('login')} className="btn btn-secondary ml-2">Back to Login</button>
             </form>
         </div>
     );
