@@ -20,6 +20,7 @@ function Home({setIsAuthenticated}) {
 
     const [notification, setNotification] = useState(null);
     const [showNotification, setShowNotification] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     const { data: tasks = [], refetch } = useGetTasksQuery({}, {});
 
@@ -41,9 +42,11 @@ function Home({setIsAuthenticated}) {
     }
 
     const handleLogout = async () => {
+        setIsLoggingOut(true);
         await fetch('/logout', { method: 'POST' });
         dispatch(apiSlice.util.resetApiState());
         setIsAuthenticated(false);
+        setIsLoggingOut(false);
     };
 
     const notificationType = notification?.type;
@@ -61,8 +64,14 @@ function Home({setIsAuthenticated}) {
                 <Toast.Body className="text-white">{notificationMessage}</Toast.Body>
             </Toast>
         </ToastContainer>
-        <h1>Todo App</h1>
-        <button onClick={handleLogout}>Logout</button>
+        <div className="d-flex justify-content-between align-items-center">
+            <div>
+                <h1>Todo App</h1>
+            </div>
+            <div>
+                <button onClick={handleLogout} disabled={isLoggingOut} className="btn btn-primary">Logout</button>
+            </div>
+        </div>
         <AddTask fetchData={fetchData} showNotification={showFlashMessage}/>
         {sortedTasks.map(task => <Task key={task.id} task={task} refetch={refetch} showFlashMessage={showFlashMessage}/>)}
         <div className="d-flex">
