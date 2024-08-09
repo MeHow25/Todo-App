@@ -23,7 +23,7 @@ function Register({ setCurrentPage }) {
     };
 
     return (
-        <div className="container mt-5">
+        <div>
             <h2>Register</h2>
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
@@ -50,7 +50,7 @@ function Register({ setCurrentPage }) {
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Register</button>
-                <button onClick={() => setCurrentPage('login')} className="btn btn-secondary ml-2">Back to Login</button>
+                <button onClick={() => setCurrentPage('login')} className="btn btn-secondary ms-2">Back to Login</button>
             </form>
         </div>
     );
